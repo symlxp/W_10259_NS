@@ -8,9 +8,9 @@ class ARPSpoofing : public QThread
 {
     Q_OBJECT
 
-signals:
-
 public slots:
+    void startSpoofingSlot(QString);
+    void stopSpoofingSlot();
 };
 
 #endif // ARPSPOOFING_H

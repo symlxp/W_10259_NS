@@ -26,11 +26,42 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    arpspoofing.cpp
+    arpspoofing.cpp \
+    getdatapackage.cpp \
+    selectnetworkcard.cpp \
+    universaltools.cpp
 
 HEADERS += \
         mainwindow.h \
-    arpspoofing.h
+    arpspoofing.h \
+    getdatapackage.h \
+    selectnetworkcard.h \
+    universaltools.h \
+    include/pcap/bluetooth.h \
+    include/pcap/bpf.h \
+    include/pcap/namedb.h \
+    include/pcap/pcap.h \
+    include/pcap/sll.h \
+    include/pcap/usb.h \
+    include/pcap/vlan.h \
+    include/bittypes.h \
+    include/ip6_misc.h \
+    include/Packet32.h \
+    include/pcap-bpf.h \
+    include/pcap-namedb.h \
+    include/pcap-stdinc.h \
+    include/pcap.h \
+    include/remote-ext.h \
+    include/Win32-Extensions.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    selectnetworkcard.ui
+
+LIBS += ../W_10259_NS\lib\Packet.lib
+LIBS += ../W_10259_NS\lib\wpcap.lib
+LIBS += -lws2_32
+
+DISTFILES += \
+    lib/Packet.lib \
+    lib/wpcap.lib
