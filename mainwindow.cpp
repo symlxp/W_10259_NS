@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     SelectNetworkCard *select_network_card_window = new SelectNetworkCard(this,getNetworkCardList());
     select_network_card_window->exec();
-
+    used_network_card = select_network_card_window->user_select;
 
 }
 

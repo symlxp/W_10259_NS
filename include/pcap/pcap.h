@@ -397,7 +397,7 @@ int	pcap_get_selectable_fd(pcap_t *);
 
 #ifdef HAVE_REMOTE
 /* Includes most of the public stuff that is needed for the remote capture */
-#include <remote-ext.h>
+#include "include/remote-ext.h"
 #endif	 /* HAVE_REMOTE */
 
 #ifdef __cplusplus

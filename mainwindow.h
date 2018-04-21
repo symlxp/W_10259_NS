@@ -20,7 +20,7 @@ public:
 private:
     Ui::MainWindow *ui;
 
-
+    QString used_network_card;
 
 
 };
