@@ -1,13 +1,17 @@
 #include "getdatapackage.h"
-#include <QSql>
-#include <QSqlDatabase>
-#include <QDebug>
-#include <QMessageBox>
-#include <QDateTime>
+#include <QByteArray>
+#include <QSqlQuery>
+
+#define DSQL qDebug()<<"exec SQL->"<<
+
+GetDataPackage * super_this;
+QSqlDatabase db;
 
 void GetDataPackage::run(){
 
 //    moveToThread(this);
+
+    super_this = this;
 
     while(dev_name==""){
         ;
@@ -56,40 +60,40 @@ void GetDataPackage::init(){
 
     used_network_card = dev_name;
 
-    int res;
-    struct tm *ltime;
-    char timestr[16];
-    struct pcap_pkthdr *header;
-    const u_char *pkt_data;
-    time_t local_tv_sec;
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(db_path);
     if(!db.open()){
         qDebug()<<"DataBase open failed!";
     }
 
+    QSqlQuery sql_query;
 
-    while((res = pcap_next_ex( adhandle, &header, &pkt_data)) >= 0){
+    sql_query.prepare("create table packages(id int  primary key, time text,data blob);");
+    DSQL"create table packages(id int  primary key, time text,data blob);";
+    sql_query.exec();
 
-//        QMessageBox::information(NULL,"x","y");
+    pcap_loop(adhandle, 0, packetHandler, NULL);
+
+//    while((res = pcap_next_ex( adhandle, &header, &pkt_data)) >= 0){
+
+////        QMessageBox::information(NULL,"x","y");
 
 
-        if(res == 0)
-            /* 超时时间到 */
-            continue;
+//        if(res == 0)
+//            /* 超时时间到 */
+//            continue;
 
-        /* 将时间戳转换成可识别的格式 */
-        local_tv_sec = header->ts.tv_sec;
-        ltime=localtime(&local_tv_sec);
-        strftime( timestr, sizeof timestr, "%H:%M:%S", ltime);
+//        /* 将时间戳转换成可识别的格式 */
+//        local_tv_sec = header->ts.tv_sec;
+//        ltime=localtime(&local_tv_sec);
+//        strftime( timestr, sizeof timestr, "%H:%M:%S", ltime);
 
-        printf("%s,%.6d len:%d\n", timestr, header->ts.tv_usec, header->len);
-        qDebug()<<timestr<<header->ts.tv_usec<<header->len;
-        PackageBrief x;
-        x.source_ip = tr("%1%2%3").arg(timestr).arg(header->ts.tv_usec).arg(header->len);
-        emit getDataPackage(x);
-    }
+//        printf("%s,%.6d len:%d\n", timestr, header->ts.tv_usec, header->len);
+//        qDebug()<<timestr<<header->ts.tv_usec<<header->len;
+//        PackageBrief x;
+//        x.source_ip = tr("%1%2%3").arg(timestr).arg(header->ts.tv_usec).arg(header->len);
+//        emit getDataPackage(x);
+//    }
 
 
 }
@@ -104,8 +108,62 @@ void GetDataPackage::satrtGetDataPackage(QString db_path,QString dev_name){
 
 }
 
+long long package_id = 0;
 
+void packetHandler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data)
+{
+    struct tm *ltime;
+    char timestr[16];
+    ip_header *ih;
+    udp_header *uh;
+    u_int ip_len;
+    u_short sport,dport;
+    time_t local_tv_sec;
 
+    /* 将时间戳转换成可识别的格式 */
+    local_tv_sec = header->ts.tv_sec;
+    ltime=localtime(&local_tv_sec);
+    strftime( timestr, sizeof timestr, "%H:%M:%S", ltime);
+//    header->
+
+    /* 打印数据包的时间戳和长度 */
+    printf("%s.%.6d len:%d ", timestr, header->ts.tv_usec, header->len);
+
+    /* 获得IP数据包头部的位置 */
+    ih = (ip_header *) (pkt_data +
+        14); //以太网头部长度
+
+    /* 获得UDP首部的位置 */
+    ip_len = (ih->ver_ihl & 0xf) * 4;
+    uh = (udp_header *) ((u_char*)ih + ip_len);
+
+    /* 将网络字节序列转换成主机字节序列 */
+    sport = ntohs( uh->sport );
+    dport = ntohs( uh->dport );
+
+    PackageBrief x;
+    x.type_of_service = ih->tos;
+    x.total_length = ih->tlen;
+    x.time_to_live = ih->ttl;
+    x.protocol = ih->proto;
+    x.header_checksum = ih->crc;
+    x.udp_dport = dport;
+    x.udp_sport = sport;
+    x.udp_len = uh->len;
+    x.source_ip = QObject::tr("%1.%2.%3.%4").arg(ih->saddr.byte1).arg(ih->saddr.byte2).arg(ih->saddr.byte3).arg(ih->saddr.byte4);
+    x.target_ip = QObject::tr("%1.%2.%3.%4").arg(ih->daddr.byte1).arg(ih->daddr.byte2).arg(ih->daddr.byte3).arg(ih->daddr.byte4);
+    emit super_this->getDataPackage(x);
+
+    QSqlQuery sql_query;
+
+    sql_query.prepare("insert into packages values (?, ?, ?)");
+    sql_query.addBindValue(package_id++);
+    sql_query.addBindValue(timestr);
+    QByteArray databuf;
+    databuf = QByteArray::fromRawData((char*)pkt_data,-1);
+    sql_query.addBindValue(databuf);
+    sql_query.exec();
+}
 
 
 
