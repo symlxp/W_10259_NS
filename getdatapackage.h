@@ -35,6 +35,7 @@ struct PackageBrief
     int udp_sport;
     int udp_dport;
     int udp_len;
+    QString get_time;
 };
 
 /* 4字节的IP地址 */

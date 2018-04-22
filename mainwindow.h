@@ -19,7 +19,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    void xx();
 
 public:
     QString used_network_card;

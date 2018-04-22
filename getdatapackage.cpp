@@ -142,6 +142,7 @@ void packetHandler(u_char *param, const struct pcap_pkthdr *header, const u_char
     dport = ntohs( uh->dport );
 
     PackageBrief x;
+    x.package_id = package_id;
     x.type_of_service = ih->tos;
     x.total_length = ih->tlen;
     x.time_to_live = ih->ttl;
@@ -150,6 +151,7 @@ void packetHandler(u_char *param, const struct pcap_pkthdr *header, const u_char
     x.udp_dport = dport;
     x.udp_sport = sport;
     x.udp_len = uh->len;
+    x.get_time = timestr;
     x.source_ip = QObject::tr("%1.%2.%3.%4").arg(ih->saddr.byte1).arg(ih->saddr.byte2).arg(ih->saddr.byte3).arg(ih->saddr.byte4);
     x.target_ip = QObject::tr("%1.%2.%3.%4").arg(ih->daddr.byte1).arg(ih->daddr.byte2).arg(ih->daddr.byte3).arg(ih->daddr.byte4);
     emit super_this->getDataPackage(x);
