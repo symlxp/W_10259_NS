@@ -24,6 +24,9 @@ private:
 public:
     QString used_network_card;
 
+public slots:
+    void getPackage(PackageBrief);
+
 signals:
     void sendStartMSG(QString,QString);
 

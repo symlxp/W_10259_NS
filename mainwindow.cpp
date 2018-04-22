@@ -3,6 +3,7 @@
 #include "selectnetworkcard.h"
 #include "universaltools.h"
 #include <QMessageBox>
+#include <QDebug>
 
 #include "getdatapackage.h"
 
@@ -24,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     x->start();
 
     connect(this,SIGNAL(sendStartMSG(QString,QString)),x,SLOT(satrtGetDataPackage(QString,QString)));
+    connect(x,SIGNAL(getDataPackage(PackageBrief)),this,SLOT(getPackage(PackageBrief)));
 
     emit sendStartMSG(tr("x.db"),used_network_card);
 
@@ -36,6 +38,10 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::getPackage(PackageBrief x){
+    qDebug()<<"---"<<x.source_ip;
 }
 
 

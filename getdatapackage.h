@@ -44,6 +44,8 @@ private:
     QString used_network_card;
     pcap_if_t *d;
     pcap_t *adhandle;
+    QString db_path;
+    QString dev_name;
 
 
 public slots:

@@ -9,9 +9,11 @@ void GetDataPackage::run(){
 
 //    moveToThread(this);
 
-//    while(true){
-//        ;
-//    }
+    while(dev_name==""){
+        ;
+    }
+
+    init();
 
 }
 
@@ -50,17 +52,9 @@ void GetDataPackage::init(){
 
     pcap_freealldevs(alldevs);
 
-}
-
-
-
-void GetDataPackage::satrtGetDataPackage(QString db_path,QString dev_name){
-
     qDebug()<<"get db path:"<<db_path;
 
     used_network_card = dev_name;
-
-    init();
 
     int res;
     struct tm *ltime;
@@ -92,7 +86,21 @@ void GetDataPackage::satrtGetDataPackage(QString db_path,QString dev_name){
 
         printf("%s,%.6d len:%d\n", timestr, header->ts.tv_usec, header->len);
         qDebug()<<timestr<<header->ts.tv_usec<<header->len;
+        PackageBrief x;
+        x.source_ip = tr("%1%2%3").arg(timestr).arg(header->ts.tv_usec).arg(header->len);
+        emit getDataPackage(x);
     }
+
+
+}
+
+
+
+void GetDataPackage::satrtGetDataPackage(QString db_path,QString dev_name){
+
+    this->db_path = db_path;
+    this->dev_name = dev_name;
+    used_network_card = dev_name;
 
 }
 
