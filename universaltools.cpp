@@ -1,4 +1,6 @@
 #include "universaltools.h"
+#include <QString>
+#include <QObject>
 
 QVector<QMap<QString, QString>> getNetworkCardList()
 {
@@ -33,10 +35,13 @@ QVector<QMap<QString, QString>> getNetworkCardList()
                 if (a->addr)
                 {
                     ret["address"] = iptos(((struct sockaddr_in *)a->addr)->sin_addr.s_addr);
+                    ret["address_int"] = QObject::tr("%1").arg(((struct sockaddr_in *)a->addr)->sin_addr.s_addr);
                 }
                 if (a->netmask)
                 {
-                    ret["netmask"] = iptos(((struct sockaddr_in *)a->netmask)->sin_addr.s_addr);
+                    ret["netmask"] = iptos(((struct sockaddr_in *)a->netmask)->sin_addr.S_un.S_addr);
+                    ret["netmask_int"] = QObject::tr("%1").arg(((struct sockaddr_in *)a->netmask)->sin_addr.S_un.S_addr);
+
                 }
                 if (a->broadaddr)
                 {

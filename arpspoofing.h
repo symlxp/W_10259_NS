@@ -49,15 +49,20 @@ private:
     unsigned char *GetSelfMac(char *pDevName);
     unsigned char *BuildArpPacket(unsigned char *source_mac,unsigned long srcIP, unsigned long destIP);
     void init();
-    void sendSpoofingPackage(QString target);
+    void run();
+    void sendSpoofingPackage();
     QString used_network_card;
     unsigned char *mac_addr;
     pcap_if_t *d;
     pcap_t *adhandle;
+    QString target;
+    QString gatewayIP;
+public:
+    void setParameter(QString,QString,QString,unsigned long,unsigned long);
 
-public slots:
-    void startSpoofingSlot(QString,QString);
-    void stopSpoofingSlot();
+    unsigned long ip;              //IP地址
+    unsigned long netmask;         //子网掩码
+
 };
 
 #endif // ARPSPOOFING_H

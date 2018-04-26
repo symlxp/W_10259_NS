@@ -14,18 +14,11 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,2,1">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QLineEdit" name="lineEdit"/>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>PushButton</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </item>
@@ -33,26 +26,62 @@
      <widget class="QTableWidget" name="tableWidget"/>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <widget class="QTreeView" name="treeView"/>
+       <widget class="QTextBrowser" name="textBrowser_2"/>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <widget class="QTextBrowser" name="textBrowser"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,2,2">
         <item>
-         <widget class="QLineEdit" name="lineEdit_2"/>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>网关IP:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEdit_2">
+            <property name="text">
+             <string>222.20.105.254</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>目标IP:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEdit_3">
+            <property name="text">
+             <string>222.20.105.253</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QPushButton" name="start">
           <property name="text">
-           <string>PushButton</string>
+           <string>开始捕获</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="stop">
           <property name="text">
-           <string>PushButton</string>
+           <string>停止捕获</string>
           </property>
          </widget>
         </item>

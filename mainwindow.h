@@ -19,6 +19,16 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QString getRawData();
+    QSqlDatabase db;
+    QString db_path;
+    void updatePackageWindow();
+    void startX();
+    void stopX();
+    GetDataPackage *x = NULL;
+    ARPSpoofing *y = NULL;
+    unsigned long ip;              //IP地址
+    unsigned long netmask;         //子网掩码
 
 public:
     QString used_network_card;

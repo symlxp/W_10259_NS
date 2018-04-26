@@ -29,7 +29,8 @@ SOURCES += \
     arpspoofing.cpp \
     getdatapackage.cpp \
     selectnetworkcard.cpp \
-    universaltools.cpp
+    universaltools.cpp \
+    parsedatapackage.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -52,7 +53,8 @@ HEADERS += \
     include/pcap-stdinc.h \
     include/pcap.h \
     include/remote-ext.h \
-    include/Win32-Extensions.h
+    include/Win32-Extensions.h \
+    parsedatapackage.h
 
 FORMS += \
         mainwindow.ui \
